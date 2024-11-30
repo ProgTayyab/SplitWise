@@ -1,40 +1,31 @@
-#include "../HeaderFiles/Login.h"
+#include "Login.h"
 #include <iostream>
-using namespace std;
-#include <string>
 
-// Constructor to initialize default values
-LoginDetails::LoginDetails() {
-    UserName = "";
-    Password = "";
-    Email = "";
+void Login::setUsername(const string& user) {
+    username = user;
 }
 
-// Sign-up function to store the user's details
-bool LoginDetails::SignUp(const string& UserName, const string& Password, const string& Email) {
-    this->UserName = UserName;
-    this->Password = Password;
-    this->Email = Email;
-    cout << "Sign-up successful!" << endl;
-    return true;  // Return true after successful sign-up
+void Login::setEmail(const string& mail) {
+    email = mail;
 }
 
-// Email validation function
-bool LoginDetails::isValidEmail(const string& Email) {
-    return (Email.find('@') != string::npos && Email.find(".com") != string::npos);  // Check if '@' and '.com' exist
+void Login::setPassword(const string& pass) {
+    password = pass;
 }
 
-// Password validation (length should be at least 5 characters)
-bool LoginDetails::isValidPassword(const string& Password) {
-    return (Password.length() >= 5);  // Password must be at least 5 characters
+string Login::getUsername() const {
+    return username;
 }
 
-// Username validation (it shouldn't be empty)
-bool LoginDetails::isValidUserName(const string& UserName) {
-    return (UserName != "");  // Username shouldn't be an empty string
+string Login::getEmail() const {
+    return email;
 }
 
-// Authenticate the user by checking if the credentials match
-bool LoginDetails::Authenticate(const string& UserName, const string& Password, const string& Email) {
-    return (UserName == this->UserName && Password == this->Password && Email == this->Email);  // Check if all match
+string Login::getPassword() const {
+    return password;
 }
+
+bool Login::isValidEmail(const string& mail) const { // Updated to match the header file
+    return mail.find('@') != string::npos;
+}
+
