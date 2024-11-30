@@ -1,77 +1,123 @@
 #include <iostream>
-#include "../HeaderFiles/Login.h"
-
+#include <vector>
+#include <string>
+#include "Dashboard.h"
+#include "Login.h"
 
 using namespace std;
 
 int main() {
-    // Create an object of LoginDetails class
-    LoginDetails user;
+    Dashboard dashboard;
+    Login login;
 
-    int choice;
-    cout << "Welcome to the Login System" << endl;
-    cout << "1. Sign Up" << endl;
-    cout << "2. Login" << endl;
-    cout << "Enter your choice: ";
-    cin >> choice;
+    string username, password, email;
+    cout << "Welcome to SplitWise App!" << endl;
 
-    if (choice == 1) {
-        // Sign Up
-        string email, username, password;
-        
-        cout << "Enter your email: ";
+    // User registration/login
+    cout << "Enter username: ";
+    cin >> username;
+    cout << "Enter email: ";
+    cin >> email;
+    while (!login.isValidEmail(email)) { // Updated to use `isValidEmail`
+        cout << "Invalid email format. Please include '@'. Enter email again: ";
         cin >> email;
-        
-        // Validate email format
-        if (!user.isValidEmail(email)) {
-            cout << "Invalid email format. Please try again." << endl;
-            return 0;
-        }
-
-        cout << "Enter your username: ";
-        cin >> username;
-        
-        // Validate username
-        if (!user.isValidUserName(username)) {
-            cout << "Invalid username. Please try again." << endl;
-            return 0;
-        }
-
-        cout << "Enter your password: ";
-        cin >> password;
-
-        // Validate password
-        if (!user.isValidPassword(password)) {
-            cout << "Password too short! It must be at least 5 characters." << endl;
-            return 0;
-        }
-
-        // Call SignUp method to store the credentials
-        user.SignUp(email, username, password);
     }
-    else if (choice == 2) {
-        // Login
-        string email, username, password;
+    cout << "Enter password: ";
+    cin >> password;
 
-        cout << "Enter your email: ";
-        cin >> email;
-        
-        cout << "Enter your username: ";
-        cin >> username;
+    login.setUsername(username);
+    login.setEmail(email);
+    login.setPassword(password);
 
-        cout << "Enter your password: ";
-        cin >> password;
+    cout << "\nLogin successful! Welcome, " << username << "!" << endl;
 
-        // Authenticate the user
-        if (user.Authenticate(username, password, email)) {
-            cout << "Login successful!" << endl;
-        } else {
-            cout << "Login failed. Invalid credentials." << endl;
+    // Main menu
+    while (true) {
+        cout << "\nMain Menu" << endl;
+        cout << "1. Add Personal Expense" << endl;
+        cout << "2. Add Friend Expense" << endl;
+        cout << "3. Add Group Expense" << endl;
+        cout << "4. Settle Up Amount" << endl;
+        cout << "5. View All Expenses" << endl;
+        cout << "6. Exit" << endl;
+
+        int choice;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string desc;
+                double amt;
+                cout << "Enter description: ";
+                cin.ignore();
+                getline(cin, desc);
+                cout << "Enter amount: ";
+                cin >> amt;
+                dashboard.addPersonalExpense(desc, amt, username);
+                cout << "Personal expense added successfully!" << endl;
+                break;
+            }
+            case 2: {
+                string desc, friendName;
+                double amt;
+                cout << "Enter description: ";
+                cin.ignore();
+                getline(cin, desc);
+                cout << "Enter amount: ";
+                cin >> amt;
+                cout << "Enter friend's name: ";
+                cin.ignore();
+                getline(cin, friendName);
+                dashboard.addFriendExpense(desc, amt, username, friendName);
+                cout << "Friend expense added successfully!" << endl;
+                break;
+            }
+            case 3: {
+                string desc;
+                double amt;
+                int numMembers;
+                vector<string> members;
+
+                cout << "Enter description: ";
+                cin.ignore();
+                getline(cin, desc);
+                cout << "Enter amount: ";
+                cin >> amt;
+                cout << "Enter number of group members: ";
+                cin >> numMembers;
+
+                cout << "Enter group members' names:" << endl;
+                for (int i = 0; i < numMembers; ++i) {
+                    string member;
+                    cin.ignore();
+                    getline(cin, member);
+                    members.push_back(member);
+                }
+
+                dashboard.addGroupExpense(desc, amt, username, members);
+                cout << "Group expense added successfully!" << endl;
+                break;
+            }
+            case 4: {
+                string user;
+                cout << "Enter username to settle up: ";
+                cin >> user;
+                dashboard.settleUpAmount(user);
+                break;
+            }
+            case 5: {
+                dashboard.viewAllExpenses();
+                break;
+            }
+            case 6:
+                cout << "Thank you for using SplitWise. Goodbye!" << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
         }
-    }
-    else {
-        cout << "Invalid choice. Please restart the program and try again." << endl;
     }
 
     return 0;
 }
+
