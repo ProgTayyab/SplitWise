@@ -2,12 +2,12 @@
 #ifndef EXPENSE_H
 #define EXPENSE_H
 
-#include <string>
 #include <iostream>
-
+#include <string>
+#include <vector>
 using namespace std;
 
-// Base class for general expense
+// Base Expense class
 class Expense {
 protected:
     string description;
@@ -15,65 +15,41 @@ protected:
     string payer;
 
 public:
-    // Constructor to initialize the expense
-    Expense(string desc, double amt, string payer)
-        : description(desc), amount(amt), payer(payer) {}
+    Expense(string desc, double amt, string payer);
+    virtual ~Expense() {}
 
-    // Pure virtual function to display expense (will be overridden in derived classes)
-    virtual void displayExpense() = 0;
-    
-    // Getter functions (optional, if needed for further functionality)
-    double getAmount() { return amount; }
-    string getPayer() { return payer; }
-    string getDescription() { return description; }
+    virtual void displayExpense() const = 0; // Pure virtual function for displaying expenses
+    double getAmount() const { return amount; }
+    string getPayer() const { return payer; }
 };
 
-
-
-
-class GroupExpense : public Expense {
-private:
-    vector<string> groupMembers; // A list of group members who are sharing the expense
-
+// Derived class for Personal Expenses
+class PersonalExpense : public Expense {
 public:
-    // Constructor to initialize the group expense
-    GroupExpense(string desc, double amt, string payer, vector<string> groupMembers)
-        : Expense(desc, amt, payer), groupMembers(groupMembers) {}
-
-    // Overriding the displayExpense method
-    void displayExpense() override {
-        cout << "Group Expense Description: " << description << endl;
-        cout << "Amount: " << amount << endl;
-        cout << "Paid by: " << payer << endl;
-        cout << "Shared with: ";
-        for (const auto& member : groupMembers) {
-            cout << member << " ";
-        }
-        cout << endl;
-        cout << "--------------------------" << endl;
-    }
+    PersonalExpense(string desc, double amt, string payer);
+    void displayExpense() const override;
 };
 
-
-
-// Derived class for friend expenses
+// Derived class for Friend Expenses
 class FriendExpense : public Expense {
 private:
-    string friendName; // The friend's name for the shared expense
+    string friendName;
 
 public:
-    // Constructor to initialize the friend expense
-    FriendExpense(string desc, double amt, string payer, string friendName)
-        : Expense(desc, amt, payer), friendName(friendName) {}
-
-    // Overriding the displayExpense method
-    void displayExpense() override {
-        cout << "Friend Expense Description: " << description << endl;
-        cout << "Amount: " << amount << endl;
-        cout << "Paid by: " << payer << endl;
-        cout << "Shared with: " << friendName << endl;
-        cout << "--------------------------" << endl;
-    }
+    FriendExpense(string desc, double amt, string payer, string friendName);
+    void displayExpense() const override;
+    string getFriendName() const { return friendName; }
 };
 
-#endif // EXPENSE_H
+// Derived class for Group Expenses
+class GroupExpense : public Expense {
+private:
+    vector<string> groupMembers;
+
+public:
+    GroupExpense(string desc, double amt, string payer, vector<string> groupMembers);
+    void displayExpense() const override;
+    vector<string> getGroupMembers() const { return groupMembers; }
+};
+
+#endif
