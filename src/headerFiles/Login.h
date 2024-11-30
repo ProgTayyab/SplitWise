@@ -1,25 +1,26 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
-#include <string>  // Include string header
+#include <string>
 
-using namespace std;  // Use the standard namespace
+using namespace std;
 
-class LoginDetails {
+class Login {
 private:
-    string Email;
-    string UserName;
-    string Password;
+    string username;
+    string email;
+    string password;
 
 public:
-    LoginDetails();  // Default constructor
-    LoginDetails(const string& email, const string& username, const string& password); // Parametrized constructor
+    void setUsername(const string& user);
+    void setEmail(const string& mail);
+    void setPassword(const string& pass);
 
-    bool SignUp(const string& email, const string& username, const string& password);
-    bool isValidUserName(const string& username);
-    bool isValidPassword(const string& password);
-    bool isValidEmail(const string& email);
-    bool Authenticate(const string& email, const string& username, const string& password);
+    string getUsername() const;
+    string getEmail() const;
+    string getPassword() const;
+
+    bool isValidEmail(const string& mail) const; // Renamed from `validateEmail`
 };
 
-#endif // LOGIN_H
+#endif
