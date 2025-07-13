@@ -1,4 +1,5 @@
 #include "Expense.h"
+#include "Theme.h"
 #include <iostream>
 
 using namespace std;
@@ -12,13 +13,13 @@ PersonalExpense::PersonalExpense(const std::string& description, double amount, 
     : Expense(description, amount, payer) {}
 
 void PersonalExpense::displayExpense() const {
-    cout << "=========================================\n";
-    cout << "             PERSONAL EXPENSE            \n";
-    cout << "=========================================\n";
-    cout << "Payer       : " << payer << "\n"
-         << "Description : " << description << "\n"
-         << "Amount      : $" << amount << "\n";
-    cout << "=========================================\n";
+    Theme::printSeparator();
+    Theme::printHeader("             PERSONAL EXPENSE            ");
+    Theme::printSeparator();
+    Theme::printMenu("Payer       : " + payer + "\n");
+    Theme::printMenu("Description : " + description + "\n");
+    Theme::printMenu("Amount      : $" + std::to_string(amount) + "\n");
+    Theme::printSeparator();
 }
 
 
@@ -28,14 +29,14 @@ FriendExpense::FriendExpense(const std::string& description, double amount, cons
     : Expense(description, amount, payer), friendName(friendName) {}
 
 void FriendExpense::displayExpense() const {
-    cout << "=========================================\n";
-    cout << "              FRIEND EXPENSE             \n";
-    cout << "=========================================\n";
-    cout << "Payer       : " << payer << "\n"
-         << "Friend      : " << friendName << "\n"
-         << "Description : " << description << "\n"
-         << "Amount      : $" << amount << "\n";
-    cout << "=========================================\n";
+    Theme::printSeparator();
+    Theme::printHeader("              FRIEND EXPENSE             ");
+    Theme::printSeparator();
+    Theme::printMenu("Payer       : " + payer + "\n");
+    Theme::printMenu("Friend      : " + friendName + "\n");
+    Theme::printMenu("Description : " + description + "\n");
+    Theme::printMenu("Amount      : $" + std::to_string(amount) + "\n");
+    Theme::printSeparator();
 }
 
 
@@ -46,18 +47,18 @@ GroupExpense::GroupExpense(const std::string& description, double amount, const 
 
 
 void GroupExpense::displayExpense() const {
-    std::cout << "=========================================\n";
-    std::cout << "              GROUP EXPENSE              \n";
-    std::cout << "=========================================\n";
-    std::cout << "Payer        : " << payer << "\n"
-              << "Description  : " << description << "\n"
-              << "Amount       : $" << amount << "\n"
-              << "Group Members: ";
+    Theme::printSeparator();
+    Theme::printHeader("              GROUP EXPENSE              ");
+    Theme::printSeparator();
+    Theme::printMenu("Payer        : " + payer + "\n");
+    Theme::printMenu("Description  : " + description + "\n");
+    Theme::printMenu("Amount       : $" + std::to_string(amount) + "\n");
     
-    // Display group members in a formatted way
+    std::string members = "Group Members: ";
     for (const auto& member : groupMembers) {
-        std::cout << member << " ";
+        members += member + " ";
     }
-    std::cout << "\n=========================================\n";
+    Theme::printMenu(members + "\n");
+    Theme::printSeparator();
 }
 

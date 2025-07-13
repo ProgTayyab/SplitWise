@@ -1,4 +1,5 @@
 #include "Dashboard.h"
+#include "Theme.h"
 #include <iostream>
 #include <algorithm>
 
@@ -20,12 +21,15 @@ void Dashboard::addGroupExpense(const std::string& description, double amount, c
 void Dashboard::deleteExpense(int serialNo, const std::string& expenseType) {
     if (expenseType == "personal" && serialNo >= 0 && serialNo < personalExpenses.size()) {
         personalExpenses.erase(personalExpenses.begin() + serialNo);
+        Theme::printSuccess("Personal expense deleted successfully!");
     } else if (expenseType == "friend" && serialNo >= 0 && serialNo < friendExpenses.size()) {
         friendExpenses.erase(friendExpenses.begin() + serialNo);
+        Theme::printSuccess("Friend expense deleted successfully!");
     } else if (expenseType == "group" && serialNo >= 0 && serialNo < groupExpenses.size()) {
         groupExpenses.erase(groupExpenses.begin() + serialNo);
+        Theme::printSuccess("Group expense deleted successfully!");
     } else {
-        std::cout << "Invalid serial number or expense type!" << std::endl;
+        Theme::printError("Invalid serial number or expense type!");
     }
 }
 
@@ -50,10 +54,15 @@ void Dashboard::displayGroupExpenses() const {
     }
 }
 void Dashboard::displayGroups() const {
-    std::cout << "Groups:\n";
-    for (const auto& group : groups) {
-        std::cout << "- " << group << "\n";
-    }}
+    Theme::printHeader("Groups:");
+    if (groups.empty()) {
+        Theme::printMenu("No groups created yet.\n");
+    } else {
+        for (const auto& group : groups) {
+            Theme::printMenu("- " + group + "\n");
+        }
+    }
+}
 
 void Dashboard::createGroup(const std::string& groupName, const std::vector<std::string>& members) {
     groups.push_back(groupName);
